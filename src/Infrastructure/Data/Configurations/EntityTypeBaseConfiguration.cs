@@ -20,7 +20,7 @@ public static class BaseEntityConfig
     {
         builder.Property(e => e.CreatedAt)
                .HasColumnType("datetime")
-               .HasDefaultValueSql("NOW()")
+               .HasDefaultValueSql("GETDATE()")
                .ValueGeneratedOnAdd();
 
         builder.Property(e => e.UpdatedAt)
