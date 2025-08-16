@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Pokemons\Response\" />
+    <Folder Include="DTOs\Pokemons\Request\" />
+  </ItemGroup>
+
 </Project>

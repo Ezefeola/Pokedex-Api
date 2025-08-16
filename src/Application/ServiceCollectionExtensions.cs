@@ -1,4 +1,6 @@
-﻿using Application.Contracts.UseCases.Users;
+﻿using Application.Contracts.Services;
+using Application.Contracts.UseCases.Users;
+using Application.Services;
 using Application.UseCases.Users;
 using Domain.Users;
 using FluentValidation;
@@ -13,6 +15,7 @@ public static class ServiceCollectionExtensions
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddFluentValidation();
+        services.AddServices();
         services.AddUseCases();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     }
@@ -20,6 +23,11 @@ public static class ServiceCollectionExtensions
     private static void AddFluentValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IPokeApiService, PokeApiService>();
     }
 
     private static void AddUseCases(this IServiceCollection services)

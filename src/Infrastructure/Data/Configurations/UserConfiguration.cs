@@ -14,7 +14,7 @@ public class UserConfiguration : EntityTypeBaseConfiguration<User>
                   id => id.Value,
                   value => UserId.Create(value)
                )
-               .HasColumnName(User.ColumnNames.Id)
+               .HasColumnName(nameof(User.Id))
                .ValueGeneratedNever();
 
     }
@@ -26,12 +26,12 @@ public class UserConfiguration : EntityTypeBaseConfiguration<User>
             fullNameBuilder.Property(x => x.FirstName)
                            .IsRequired()
                            .HasMaxLength(User.Rules.FIRST_NAME_MAX_LENGTH)
-                           .HasColumnName(User.ColumnNames.FirstName);
+                           .HasColumnName(nameof(User.FullName.FirstName));
 
             fullNameBuilder.Property(x => x.LastName)
                            .IsRequired()
                            .HasMaxLength(User.Rules.LAST_NAME_MAX_LENGTH)
-                           .HasColumnName(User.ColumnNames.LastName);
+                           .HasColumnName(nameof(User.FullName.LastName));
         });
 
         builder.ComplexProperty(x => x.EmailAddress, emailBuilder =>
@@ -39,11 +39,9 @@ public class UserConfiguration : EntityTypeBaseConfiguration<User>
             emailBuilder.Property(x => x.Value)
                         .IsRequired()
                         .HasMaxLength(User.Rules.EMAIL_MAX_LENGTH)
-                        .HasColumnName(User.ColumnNames.Email);
+                        .HasColumnName("Email");
 
         });
-        builder.HasIndex(x => x.EmailAddress.Value)
-               .IsUnique();
 
         BaseEntityConfig.ApplyTo<User>(builder);
     }

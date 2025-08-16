@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using MinimalApi.Endpoints.Organizer.Extensions;
 using Scalar.AspNetCore;
 using System.Reflection;
 using System.Text.Json;

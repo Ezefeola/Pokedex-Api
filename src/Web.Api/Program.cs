@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Data.Seeders;
 using Web.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,11 @@ builder.Services.AddApiConfig(builder.Configuration);
 var app = builder.Build();
 
 #region Middlewares
+
+if(app.Environment.IsDevelopment())
+{
+    await app.InitializeDatabaseAsync();
+}
 
 app.AddApiWebApplicationConfig();
 

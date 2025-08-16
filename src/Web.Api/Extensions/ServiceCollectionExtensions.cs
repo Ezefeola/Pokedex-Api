@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddCustomExceptionHandlerConfig();
         services.AddApiAuthorizationConfig();
         services.AddHttpContextAccessorConfig();
+        services.AddHttpClient();
     }
 
     private static void AddHttpContextAccessorConfig(this IServiceCollection services)

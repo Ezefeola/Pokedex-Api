@@ -6,15 +6,6 @@ using Domain.Users.ValueObjects;
 namespace Domain.Users;
 public sealed class User : Entity<UserId>
 {
-    public static class ColumnNames
-    {
-        public const string Id = "Id";
-        public const string FirstName = "FirstName";
-        public const string LastName = "LastName";
-        public const string Email = "Email";
-        public const string Password = "Password";
-        public const string UserRole = "UserRole";
-    }
     public static class Rules
     {
         public const int FIRST_NAME_MAX_LENGTH = 100;

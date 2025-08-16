@@ -1,12 +1,12 @@
 ﻿using Application.Contracts.UseCases.Users;
 using Microsoft.AspNetCore.Mvc;
+using MinimalApi.Endpoints.Organizer.Abstractions;
 using Shared.DTOs.Users.Request;
 using Shared.DTOs.Users.Response;
 using Shared.Result;
-using Web.Api.Endpoints.Abstractions;
 
 namespace Web.Api.Endpoints.Auth;
-public class LoginEndpoint : IEndpoint<AuthEndpointsGroup>
+public class LoginEndpoint : IEndpoint<AuthEndpointsConfiguration>
 {
     public RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder app)
     {
