@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UseCases\PokeApi\" />
     <Folder Include="UseCases\Pokemons\Validators\" />
   </ItemGroup>
 

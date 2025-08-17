@@ -1,10 +1,11 @@
 ﻿using Application.Services;
+using Shared.DTOs.PokeApi.Response;
 
 namespace Application.Contracts.Services
 {
     public interface IPokeApiService
     {
-        Task<List<PokemonResource>> GetAllPokemonResourcesAsync();
-        Task<PokemonApiResponse?> GetPokemonDetailsAsync(string url);
+        Task<PokemonApiResponseDto?> GetPokemonDetailsAsync(string url);
+        Task<PokemonListResponseDto?> GetPokemonResourcesWithUrlAsync(string url);
     }
 }

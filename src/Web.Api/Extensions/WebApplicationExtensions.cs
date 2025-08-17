@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MinimalApi.Endpoints.Organizer.Extensions;
 using Scalar.AspNetCore;
 using System.Reflection;
@@ -16,6 +17,11 @@ public static class WebApplicationExtensions
         UseHealthChecksConfig(app);
         UseMapEndpointsConfig(app);
         UseHttpsRedirectionConfig(app);
+    }
+
+    private static void UseHangFireConfiguration(WebApplication app)
+    {
+        app.UseHangfireDashboard();
     }
 
     private static void UseExtensionHandlerConfig(WebApplication app)

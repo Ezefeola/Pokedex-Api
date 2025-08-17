@@ -1,6 +1,8 @@
 ﻿using Application.Contracts.Services;
+using Application.Contracts.UseCases.Pokemons;
 using Application.Contracts.UseCases.Users;
 using Application.Services;
+using Application.UseCases.Pokemons;
 using Application.UseCases.Users;
 using Domain.Users;
 using FluentValidation;
@@ -33,9 +35,14 @@ public static class ServiceCollectionExtensions
     private static void AddUseCases(this IServiceCollection services)
     {
         services.AddUserUseCases();
+        services.AddPokemonsUseCases();
     }
     private static void AddUserUseCases(this IServiceCollection services)
     {
         services.AddScoped<ILogin, Login>();
+    }
+    private static void AddPokemonsUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<IUpdatePokemonsDatabase, UpdatePokemonsDatabase>();
     }
 }

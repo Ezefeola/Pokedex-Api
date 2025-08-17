@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Infrastructure.Data.Seeders;
+using Infrastructure.HangFire;
 using Web.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,8 @@ if(app.Environment.IsDevelopment())
 }
 
 app.AddApiWebApplicationConfig();
+
+JobsInitializer.InitializeRecurringJobs();
 
 #endregion Middlewares
 

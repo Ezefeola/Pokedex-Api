@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Common.DomainResults;
 using Domain.Pokemons;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Data.Seeders;
 public static class PokemonSeeder
@@ -13,33 +14,37 @@ public static class PokemonSeeder
     /// It fetches only the Pokémon that are not already in the database.
     /// </summary>
     /// <param name="batchSize">The number of Pokémon to process and insert at a time.</param>
-    public static async Task Seed(IPokeApiService pokeApiService, DbContext dbContext)
+    public static async Task Seed(
+        IPokeApiService pokeApiService, 
+        ILogger logger,
+        DbContext dbContext
+    )
     {
-        Console.WriteLine("Starting Pokémon database seed...");
+        logger.LogInformation("Starting Pokémon database seed...");
 
         // Step 1: Get IDs of Pokémon already in our database to avoid duplicates.
         HashSet<int> existingPokemonIds = await dbContext.Set<Pokemon>()
                                                          .Select(p => p.Id)
                                                          .ToHashSetAsync();
-        Console.WriteLine($"Found {existingPokemonIds.Count} existing Pokémon in the database.");
+        logger.LogInformation($"Found {existingPokemonIds.Count} existing Pokémon in the database.");
 
         // Step 2: Get all Pokémon resources from the API.
         List<PokemonResource> allPokemonResources = await pokeApiService.GetAllPokemonResourcesAsync();
-        Console.WriteLine($"Fetched {allPokemonResources.Count} total Pokémon resources from PokéAPI.");
+        logger.LogInformation($"Fetched {allPokemonResources.Count} total Pokémon resources from PokéAPI.");
 
         // Step 3: Filter out the ones we already have.
-        List<PokemonResource> newPokemonResources = allPokemonResources.Where(resource =>
+        List<PokemonResource> newPokemonResources = [.. allPokemonResources.Where(resource =>
         {
             // The ID is in the URL, e.g., ".../pokemon/1/"
-            var idString = resource.Url.TrimEnd('/').Split('/').Last();
+            string idString = resource.Url.TrimEnd('/').Split('/').Last();
             return int.TryParse(idString, out int id) && !existingPokemonIds.Contains(id);
-        }).ToList();
+        })];
 
-        Console.WriteLine($"Found {newPokemonResources.Count} new Pokémon to add.");
+        logger.LogInformation($"Found {newPokemonResources.Count} new Pokémon to add.");
 
         if (newPokemonResources.Count == 0)
         {
-            Console.WriteLine("Database is already up-to-date.");
+            logger.LogInformation("Database is already up-to-date.");
             return;
         }
 
@@ -48,18 +53,19 @@ public static class PokemonSeeder
         int totalAdded = 0;
         for (int i = 0; i < newPokemonResources.Count; i += batchSizeToProcessPokemons)
         {
-            var batchResources = newPokemonResources.Skip(i).Take(batchSizeToProcessPokemons).ToList();
-            Console.WriteLine($"Processing batch {i / batchSizeToProcessPokemons + 1} with {batchResources.Count} Pokémon...");
+            List<PokemonResource> batchResources = [.. newPokemonResources.Skip(i).Take(batchSizeToProcessPokemons)];
+            logger.LogInformation($"Processing batch {i / batchSizeToProcessPokemons + 1} with {batchResources.Count} Pokémon...");
 
-            List<Task<PokemonApiResponse?>> tasks = batchResources.Select(
+            List<Task<PokemonApiResponse?>> tasks = batchResources.Select
+                                                                    (
                                                                         resource =>
                                                                         pokeApiService.GetPokemonDetailsAsync(resource.Url)
-                                                                   )
+                                                                    )
                                                                    .ToList();
             PokemonApiResponse?[] pokemonDetails = await Task.WhenAll(tasks);
 
-            List<Pokemon> pokemonToInsert = pokemonDetails.Where(x => x != null)
-                                                          .Select(MapToPokemonEntity)
+            List<Pokemon> pokemonToInsert = pokemonDetails.Where(x => x is not null)
+                                                          .Select(x => MapToPokemonEntity(x))
                                                           .ToList();
 
             if (pokemonToInsert.Count > 0)
@@ -67,11 +73,11 @@ public static class PokemonSeeder
                 await dbContext.Set<Pokemon>().AddRangeAsync(pokemonToInsert);
                 await dbContext.SaveChangesAsync();
                 totalAdded += pokemonToInsert.Count;
-                Console.WriteLine($"Successfully inserted {pokemonToInsert.Count} Pokémon into the database.");
+                logger.LogInformation($"Successfully inserted {pokemonToInsert.Count} Pokémon into the database.");
             }
         }
 
-        Console.WriteLine($"Seeding complete. Total new Pokémon added: {totalAdded}.");
+        logger.LogInformation($"Seeding complete. Total new Pokémon added: {totalAdded}.");
     }
 
 
