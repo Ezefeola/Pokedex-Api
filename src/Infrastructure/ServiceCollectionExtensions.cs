@@ -25,10 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddHangfireConfiguration(connectionString);
     }
 
-    public static void AddHangfireConfiguration(
-        this IServiceCollection services,
-        string connectionString
-    )
+    public static void AddHangfireConfiguration(this IServiceCollection services, string connectionString)
     {
         services.AddHangfire(config => config
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -57,7 +54,8 @@ public static class ServiceCollectionExtensions
     private static void AddAuthenticationInternal(this IServiceCollection services)
     {
         services.AddScoped<ITokenProvider, TokenProvider>()
-                .AddScoped<IUserInfo, UserInfo>();
+                .AddScoped<IUserInfo, UserInfo>()
+                .AddScoped<IPasswordHasher, PasswordHasher>();
     }
 
     private static void AddUnitOfWork(this IServiceCollection services)
@@ -67,6 +65,8 @@ public static class ServiceCollectionExtensions
 
     private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IPokemonRepository, PokemonRepository>()
+                .AddScoped<IUserPokemonRepository, UserPokemonRepository>();
     }
 }

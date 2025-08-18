@@ -1,4 +1,5 @@
 ﻿using Domain.Pokemons;
+using Domain.Pokemons.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,13 +10,19 @@ public class PokemonConfiguration : EntityTypeBaseConfiguration<Pokemon>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
+               .HasConversion(
+                    id => id.Value,
+                    value => PokemonId.Create(value)            
+               )
                .IsRequired()
                .ValueGeneratedNever();
-
     }
 
     protected override void ConfigurateProperties(EntityTypeBuilder<Pokemon> builder)
     {
+        builder.Property(x => x.Number)
+               .IsRequired();
+
         builder.Property(x => x.Name)
                .IsRequired()
                .HasMaxLength(Pokemon.Rules.NAME_MAX_LENGTH)

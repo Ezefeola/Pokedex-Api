@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Common.DomainResults;
 using Domain.Common.ValueObjects;
+using Domain.Pokemons.Entities;
 using Domain.Users.ValueObjects;
 
 namespace Domain.Users;
@@ -35,8 +36,10 @@ public sealed class User : Entity<UserId>
 
     public FullName FullName { get; private set; } = default!;
     public EmailAddress EmailAddress { get; private set; } = default!;
-    public string Password { get; set; } = default!;
-    public UserRolesEnum Role { get; set; } = default!;
+    public string Password { get; private set; } = default!;
+    public UserRolesEnum Role { get; private set; } = default!;
+    private readonly List<UserPokemon> _userPokemons = [];
+    public IReadOnlyCollection<UserPokemon> UserPokemons => _userPokemons;
 
     private User() { }
 
@@ -44,7 +47,7 @@ public sealed class User : Entity<UserId>
         string firstName,
         string lastName,
         string email,
-        string otpHash,
+        string passwordHash,
         UserRolesEnum role
     )
     {
@@ -66,7 +69,8 @@ public sealed class User : Entity<UserId>
             Id = UserId.NewId(),
             EmailAddress = emailAddressResult.Value,
             FullName = fullNameResult.Value,
-            Role = role
+            Role = role,
+            Password = passwordHash
         };
 
         return DomainResult<User>.Success(user)

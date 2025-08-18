@@ -8,16 +8,20 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext;
     public IUserRepository UserRepository { get; }
+    public IUserPokemonRepository UserPokemonRepository { get; }
     public IPokemonRepository PokemonRepository { get; }
 
     public UnitOfWork(
         ApplicationDbContext context,
         IUserRepository userRepository,
-        IPokemonRepository pokemonRepository)
+        IPokemonRepository pokemonRepository,
+        IUserPokemonRepository userPokemonRepository
+    )
     {
         _dbContext = context;
         UserRepository = userRepository;
         PokemonRepository = pokemonRepository;
+        UserPokemonRepository = userPokemonRepository;  
     }
 
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)

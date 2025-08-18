@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Infrastructure.Data.Seeders;
 using Infrastructure.HangFire;
 using Web.Api.Extensions;
 
@@ -22,10 +21,10 @@ var app = builder.Build();
 
 #region Middlewares
 
-if(app.Environment.IsDevelopment())
-{
-    await app.InitializeDatabaseAsync();
-}
+//if(app.Environment.IsDevelopment())
+//{
+//    await app.InitializeDatabaseAsync();
+//}
 
 app.AddApiWebApplicationConfig();
 

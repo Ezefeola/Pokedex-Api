@@ -39,10 +39,12 @@ public static class ServiceCollectionExtensions
     }
     private static void AddUserUseCases(this IServiceCollection services)
     {
-        services.AddScoped<ILogin, Login>();
+        services.AddScoped<ILogin, Login>()
+                .AddScoped<IRegister, Register>();
     }
     private static void AddPokemonsUseCases(this IServiceCollection services)
     {
-        services.AddScoped<IUpdatePokemonsDatabase, UpdatePokemonsDatabase>();
+        services.AddScoped<IGetPokemons, GetPokemons>()
+                .AddScoped<IUpdatePokemonsDatabase, UpdatePokemonsDatabase>();
     }
 }

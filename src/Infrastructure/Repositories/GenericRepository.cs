@@ -20,6 +20,12 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return _dbSet.AsQueryable();
     }
 
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+    {
+        return await Query()
+                     .CountAsync(cancellationToken);
+    }
+
     public void Add(TEntity entity)
     {
         _dbSet.Add(entity);

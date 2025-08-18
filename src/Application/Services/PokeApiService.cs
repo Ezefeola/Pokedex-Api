@@ -6,7 +6,6 @@ namespace Application.Services;
 public class PokeApiService : IPokeApiService
 {
     private readonly HttpClient _httpClient;
-    private const string PokeApiBaseUrl = "https://pokeapi.co/api/v2/pokemon";
 
     public PokeApiService(HttpClient httpClient)
     {

@@ -1,8 +1,10 @@
 ﻿using Domain.Abstractions;
 using Domain.Common.DomainResults;
+using Domain.Pokemons.Entities;
+using Domain.Pokemons.ValueObjects;
 
 namespace Domain.Pokemons;
-public class Pokemon : Entity<int>
+public class Pokemon : Entity<PokemonId>
 {
     public static class Rules
     {
@@ -15,15 +17,18 @@ public class Pokemon : Entity<int>
     }
 
     private Pokemon() { }
-    public string Name { get; set; } = default!;
-    public decimal Height { get; set; }
-    public decimal Weight { get; set; }
-    public string ImageUrl { get; set; } = default!;
-    public string Type1 { get; set; } = default!;
-    public string? Type2 { get; set; }
+    public int Number { get; set; }
+    public string Name { get; private set; } = default!;
+    public decimal Height { get; private set; }
+    public decimal Weight { get; private set; }
+    public string ImageUrl { get; private set; } = default!;
+    public string Type1 { get; private set; } = default!;
+    public string? Type2 { get; private set; }
+    private readonly List<UserPokemon> _userPokemons = [];
+    public IReadOnlyList<UserPokemon> UserPokemons => _userPokemons;
 
     public static DomainResult<Pokemon> Create(
-        int id,
+        int number,
         string name,
         decimal height,
         decimal weight,
@@ -34,7 +39,8 @@ public class Pokemon : Entity<int>
     {
         Pokemon pokemon = new()
         {
-            Id = id,
+            Id = PokemonId.NewId(),
+            Number = number,
             Name = name,
             Height = height,
             Weight = weight,

@@ -1,6 +1,4 @@
-﻿using Domain.Abstractions.StronglyTypedIds;
-
-namespace Domain.Common.StronglyTypedIds;
+﻿namespace Domain.Abstractions.StronglyTypedIds;
 public abstract record StronglyTypedGuidId<TId> : StronglyTypedId<Guid>
 where TId : StronglyTypedGuidId<TId>, new()
 {

@@ -5,7 +5,6 @@ using Application.Utilities.Validations;
 using Domain.Users;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Identity;
 using Shared.DTOs.Users.Request;
 using Shared.DTOs.Users.Response;
 using Shared.Result;
@@ -16,13 +15,13 @@ public class Login : ILogin
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITokenProvider _tokenProvider;
-    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IValidator<LoginRequestDto> _validator;
 
     public Login(
         IUnitOfWork unitOfWork,
         ITokenProvider tokenProvider,
-        IPasswordHasher<User> passwordHasher,
+        IPasswordHasher passwordHasher,
         IValidator<LoginRequestDto> validator
     )
     {
@@ -51,8 +50,8 @@ public class Login : ILogin
                                            .WithErrors([ValidationMessages.Auth.INVALID_CREDENTIALS]);
         }
 
-        PasswordVerificationResult passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.Password, requestDto.Password);
-        if (passwordVerificationResult != PasswordVerificationResult.Success)
+        bool passwordVerificationResult = _passwordHasher.Verify(user.Password, requestDto.Password);
+        if (!passwordVerificationResult)
         {
             return Result<LoginResponseDto>.Failure(HttpStatusCode.BadRequest)
                                            .WithErrors([ValidationMessages.Auth.INVALID_CREDENTIALS]);

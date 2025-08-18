@@ -17,6 +17,7 @@ public static class WebApplicationExtensions
         UseHealthChecksConfig(app);
         UseMapEndpointsConfig(app);
         UseHttpsRedirectionConfig(app);
+        UseHangFireConfiguration(app);
     }
 
     private static void UseHangFireConfiguration(WebApplication app)

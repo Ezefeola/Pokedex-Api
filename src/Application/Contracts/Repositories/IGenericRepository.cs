@@ -6,6 +6,7 @@ public interface IGenericRepository<TEntity>
     void Add(TEntity entity);
     Task AddAsync(TEntity entity, CancellationToken cancellationToken);
     Task AddRangeAsync(List<TEntity> entities, CancellationToken cancellationToken);
+    Task<int> CountAsync(CancellationToken cancellationToken);
     IQueryable<TEntity> Query();
 }
 

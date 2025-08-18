@@ -21,8 +21,13 @@ public class UserInfo : IUserInfo
             throw new InvalidOperationException("User ID not found in the token.");
         }
 
-        UserId = int.Parse(sub);
+        if (Guid.TryParse(sub, out Guid parsedGuid))
+        {
+            UserId = parsedGuid;
+        }
+
+        //UserId = Guid.Parse(sub);
     }
 
-    public int UserId { get; }
+    public Guid UserId { get; }
 }
