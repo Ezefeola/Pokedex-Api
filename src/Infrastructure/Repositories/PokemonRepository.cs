@@ -3,6 +3,7 @@ using Application.Utilities.QueryOptions;
 using Application.Utilities.QueryOptions.Pagination;
 using Domain.Pokemons;
 using Domain.Pokemons.Entities;
+using Domain.Pokemons.ValueObjects;
 using Domain.Users.ValueObjects;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using Shared.DTOs.Pokemons.Request;
 using Shared.DTOs.Pokemons.Response;
 
 namespace Infrastructure.Repositories;
-public class PokemonRepository : GenericRepository<Pokemon, int>, IPokemonRepository
+public class PokemonRepository : GenericRepository<Pokemon, PokemonId>, IPokemonRepository
 {
     public PokemonRepository(ApplicationDbContext context) : base(context)
     {
@@ -55,16 +56,17 @@ public class PokemonRepository : GenericRepository<Pokemon, int>, IPokemonReposi
                                                                                         requestDto.GetPageIndex(),
                                                                                         requestDto.GetPageSize()
                                                                                    )
-                                                                                   .Select(p => new PokemonResponseDto
+                                                                                   .Select(x => new PokemonResponseDto
                                                                                    {
-                                                                                       Id = p.Pokemon.Id,
-                                                                                       Name = p.Pokemon.Name,
-                                                                                       Weight = p.Pokemon.Weight,
-                                                                                       Height = p.Pokemon.Height,
-                                                                                       ImageUrl = p.Pokemon.ImageUrl,
-                                                                                       Type1 = p.Pokemon.Type1,
-                                                                                       Type2 = p.Pokemon.Type2,
-                                                                                       IsCaught = p.UserPokemon != null ? p.UserPokemon.IsCaught : false 
+                                                                                       Id = x.Pokemon.Id.Value,
+                                                                                       Number = x.Pokemon.Number,
+                                                                                       Name = x.Pokemon.Name,
+                                                                                       Weight = x.Pokemon.Weight,
+                                                                                       Height = x.Pokemon.Height,
+                                                                                       ImageUrl = x.Pokemon.ImageUrl,
+                                                                                       Type1 = x.Pokemon.Type1,
+                                                                                       Type2 = x.Pokemon.Type2,
+                                                                                       IsCaught = x.UserPokemon != null ? x.UserPokemon.IsCaught : false 
                                                                                    })
                                                                                    .ToListAsync(cancellationToken);
         return pokemonResponseDtos;
@@ -75,7 +77,7 @@ public class PokemonRepository : GenericRepository<Pokemon, int>, IPokemonReposi
        if(await Query().AnyAsync())
         {
             return await Query()
-                         .MaxAsync(x => x.Id);
+                         .MaxAsync(x => x.Number);
         }
 
         return 0;

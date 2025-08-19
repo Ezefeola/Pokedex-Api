@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250816071419_Initial")]
+    [Migration("20250818095502_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,10 +26,47 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Pokemons.Entities.UserPokemon", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PokemonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsCaught")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime");
+
+                    b.HasKey("UserId", "PokemonId");
+
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
+                    b.HasIndex("PokemonId");
+
+                    b.ToTable("UserPokemon");
+                });
+
             modelBuilder.Entity("Domain.Pokemons.Pokemon", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -57,6 +94,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(456)
                         .HasColumnType("nvarchar(456)")
                         .HasColumnName("Name");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<string>("Type1")
                         .IsRequired()
@@ -148,6 +188,35 @@ namespace Infrastructure.Migrations
                         .HasFilter("IsDeleted = 0");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Domain.Pokemons.Entities.UserPokemon", b =>
+                {
+                    b.HasOne("Domain.Pokemons.Pokemon", "Pokemon")
+                        .WithMany("UserPokemons")
+                        .HasForeignKey("PokemonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Users.User", "User")
+                        .WithMany("UserPokemons")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pokemon");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Pokemons.Pokemon", b =>
+                {
+                    b.Navigation("UserPokemons");
+                });
+
+            modelBuilder.Entity("Domain.Users.User", b =>
+                {
+                    b.Navigation("UserPokemons");
                 });
 #pragma warning restore 612, 618
         }

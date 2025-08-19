@@ -15,6 +15,7 @@ public class PokemonConfiguration : EntityTypeBaseConfiguration<Pokemon>
                     value => PokemonId.Create(value)            
                )
                .IsRequired()
+               .HasColumnName(nameof(Pokemon.Id))
                .ValueGeneratedNever();
     }
 

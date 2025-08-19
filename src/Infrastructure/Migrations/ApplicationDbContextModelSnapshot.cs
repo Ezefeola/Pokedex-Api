@@ -28,8 +28,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PokemonId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PokemonId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -61,8 +61,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Pokemons.Pokemon", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -90,6 +91,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(456)
                         .HasColumnType("nvarchar(456)")
                         .HasColumnName("Name");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<string>("Type1")
                         .IsRequired()

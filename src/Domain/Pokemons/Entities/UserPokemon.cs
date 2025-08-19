@@ -13,4 +13,23 @@ public sealed class UserPokemon : Entity
     public PokemonId PokemonId { get; private set; } = default!;
     public Pokemon Pokemon { get; private set; } = default!;
     public bool IsCaught { get; private set; }
+
+    public static UserPokemon Create(
+        UserId userId,
+        PokemonId pokemonId
+    )
+    {
+        UserPokemon userPokemon = new()
+        {
+            UserId = userId,
+            PokemonId = pokemonId,
+            IsCaught = true
+        };
+        return userPokemon;
+    }
+
+    public void MarkAsCaught(bool isCaught)
+    {
+        IsCaught = isCaught;
+    }
 }
