@@ -37,7 +37,7 @@ public static class WebApplicationExtensions
             app.MapOpenApi("/api/openapi/v1.json");
             app.MapScalarApiReference("/api/scalar", options =>
             {
-                options.WithTitle("Template-Clean-Architecture Backend API")
+                options.WithTitle("Pokedex-Api Backend API")
                        .WithOpenApiRoutePattern("/api/openapi/v1.json")
                        .WithTheme(ScalarTheme.BluePlanet)
                        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)

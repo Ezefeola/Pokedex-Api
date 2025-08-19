@@ -14,6 +14,7 @@ public interface IGenericRepository<TEntity, TId> : IGenericRepository<TEntity>
     where TEntity : class, IEntity<TId>
     where TId : notnull
 {
+    Task<bool> ExistsByIdAsync(TId id, CancellationToken cancellationToken);
     Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken);
     Task<bool> SoftDeleteAsync(TId id, CancellationToken cancellationToken);
 }

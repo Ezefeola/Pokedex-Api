@@ -68,4 +68,12 @@ public class GenericRepository<TEntity, TId> : GenericRepository<TEntity>, IGene
 
         return true;
     }
+
+    public async Task<bool> ExistsByIdAsync(TId id, CancellationToken cancellationToken)
+    {
+        return await Query()
+                     .AsNoTracking()
+                     .AnyAsync(x => x.Id.Equals(id), cancellationToken);
+                
+    }
 }

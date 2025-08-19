@@ -20,12 +20,10 @@ public static class BaseEntityConfig
     {
         builder.Property(e => e.CreatedAt)
                .HasColumnType("datetime")
-               .HasDefaultValueSql("GETDATE()")
-               .ValueGeneratedOnAdd();
+               .HasDefaultValueSql("GETDATE()");
 
         builder.Property(e => e.UpdatedAt)
-               .HasColumnType("datetime")
-               .ValueGeneratedOnUpdate();
+               .HasColumnType("datetime");
 
         builder.Property(e => e.DeletedAt)
                .HasColumnType("datetime");

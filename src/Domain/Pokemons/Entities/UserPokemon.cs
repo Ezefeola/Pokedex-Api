@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions;
+using Domain.Common.DomainResults;
 using Domain.Pokemons.ValueObjects;
 using Domain.Users;
 using Domain.Users.ValueObjects;
@@ -14,7 +15,7 @@ public sealed class UserPokemon : Entity
     public Pokemon Pokemon { get; private set; } = default!;
     public bool IsCaught { get; private set; }
 
-    public static UserPokemon Create(
+    public static DomainResult<UserPokemon> Create(
         UserId userId,
         PokemonId pokemonId
     )
@@ -25,11 +26,12 @@ public sealed class UserPokemon : Entity
             PokemonId = pokemonId,
             IsCaught = true
         };
-        return userPokemon;
+        return DomainResult<UserPokemon>.Success(userPokemon);
     }
 
     public void MarkAsCaught(bool isCaught)
     {
         IsCaught = isCaught;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

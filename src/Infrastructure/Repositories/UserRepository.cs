@@ -23,11 +23,4 @@ public class UserRepository : GenericRepository<User, UserId>, IUserRepository
                      .AsNoTracking()
                      .AnyAsync(x => x.EmailAddress.Value == email, cancellationToken);
     }
-
-    public async Task<bool> ExistsByIdAsync(UserId userId, CancellationToken cancellationToken)
-    {
-        return await Query()
-                     .AsNoTracking()
-                     .AnyAsync(x => x.Id == userId, cancellationToken);
-    }
 }

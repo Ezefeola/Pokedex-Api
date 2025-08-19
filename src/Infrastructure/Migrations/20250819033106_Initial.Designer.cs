@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250818095502_Initial")]
+    [Migration("20250819033106_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -49,7 +49,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.HasKey("UserId", "PokemonId");
@@ -110,7 +109,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("Type2");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.Property<decimal>("Weight")
@@ -151,7 +149,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.ComplexProperty<Dictionary<string, object>>("EmailAddress", "Domain.Users.User.EmailAddress#EmailAddress", b1 =>

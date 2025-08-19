@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
     private static void AddPokemonsUseCases(this IServiceCollection services)
     {
         services.AddScoped<IGetPokemons, GetPokemons>()
+                .AddScoped<IGetPokemonsCount, GetPokemonsCount>()
                 .AddScoped<IMarkPokemonAsCaught, MarkPokemonAsCaught>()
                 .AddScoped<IUpdatePokemonsDatabase, UpdatePokemonsDatabase>();
     }

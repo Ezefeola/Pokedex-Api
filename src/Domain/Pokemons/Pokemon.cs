@@ -17,6 +17,7 @@ public class Pokemon : Entity<PokemonId>
     }
 
     private Pokemon() { }
+
     public int Number { get; set; }
     public string Name { get; private set; } = default!;
     public decimal Height { get; private set; }
@@ -37,6 +38,10 @@ public class Pokemon : Entity<PokemonId>
         string? type2
     )
     {
+        List<string> errors = [];
+
+        if (string.IsNullOrEmpty(name)) errors.Add(DomainErrors.Pokemons.NAME_NOT_EMPTY);
+
         Pokemon pokemon = new()
         {
             Id = PokemonId.NewId(),

@@ -15,12 +15,12 @@ public sealed record EmailAddress : ValueObject
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return DomainResult<EmailAddress>.Failure([DomainErrors.UserErrors.EMAIL_NOT_EMPTY]);
+            return DomainResult<EmailAddress>.Failure([DomainErrors.Users.EMAIL_NOT_EMPTY]);
         }
 
         if (!IsValidEmail(value))
         {
-            return DomainResult<EmailAddress>.Failure([DomainErrors.UserErrors.EMAIL_INVALID_FORMAT]);
+            return DomainResult<EmailAddress>.Failure([DomainErrors.Users.EMAIL_INVALID_FORMAT]);
         }
 
         EmailAddress emailAddress = new(value);
@@ -49,9 +49,9 @@ public sealed record EmailAddress : ValueObject
     {
         List<string> errors = [];
 
-        if (string.IsNullOrWhiteSpace(email)) errors.Add(DomainErrors.UserErrors.EMAIL_NOT_EMPTY);
+        if (string.IsNullOrWhiteSpace(email)) errors.Add(DomainErrors.Users.EMAIL_NOT_EMPTY);
 
-        if (!IsValidEmail(email)) errors.Add(DomainErrors.UserErrors.EMAIL_INVALID_FORMAT);
+        if (!IsValidEmail(email)) errors.Add(DomainErrors.Users.EMAIL_INVALID_FORMAT);
 
         if (errors.Count > 0)
         {

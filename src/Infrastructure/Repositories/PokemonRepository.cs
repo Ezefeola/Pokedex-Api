@@ -51,24 +51,25 @@ public class PokemonRepository : GenericRepository<Pokemon, PokemonId>, IPokemon
             joinedQuery = joinedQuery.Where(p => (p.UserPokemon != null && p.UserPokemon.IsCaught) == requestDto.IsCaught.Value);
         }
 
-        List<PokemonResponseDto> pokemonResponseDtos = await joinedQuery.ApplyPagination
-                                                                                   (
-                                                                                        requestDto.GetPageIndex(),
-                                                                                        requestDto.GetPageSize()
-                                                                                   )
-                                                                                   .Select(x => new PokemonResponseDto
-                                                                                   {
-                                                                                       Id = x.Pokemon.Id.Value,
-                                                                                       Number = x.Pokemon.Number,
-                                                                                       Name = x.Pokemon.Name,
-                                                                                       Weight = x.Pokemon.Weight,
-                                                                                       Height = x.Pokemon.Height,
-                                                                                       ImageUrl = x.Pokemon.ImageUrl,
-                                                                                       Type1 = x.Pokemon.Type1,
-                                                                                       Type2 = x.Pokemon.Type2,
-                                                                                       IsCaught = x.UserPokemon != null ? x.UserPokemon.IsCaught : false 
-                                                                                   })
-                                                                                   .ToListAsync(cancellationToken);
+        List<PokemonResponseDto> pokemonResponseDtos = await joinedQuery.OrderBy(x => x.Pokemon.Number)
+                                                                        .ApplyPagination
+                                                                        (
+                                                                            requestDto.GetPageIndex(),
+                                                                            requestDto.GetPageSize()
+                                                                        )
+                                                                        .Select(x => new PokemonResponseDto
+                                                                        {
+                                                                            Id = x.Pokemon.Id.Value,
+                                                                            Number = x.Pokemon.Number,
+                                                                            Name = x.Pokemon.Name,
+                                                                            Weight = x.Pokemon.Weight,
+                                                                            Height = x.Pokemon.Height,
+                                                                            ImageUrl = x.Pokemon.ImageUrl,
+                                                                            Type1 = x.Pokemon.Type1,
+                                                                            Type2 = x.Pokemon.Type2,
+                                                                            IsCaught = x.UserPokemon != null ? x.UserPokemon.IsCaught : false 
+                                                                        })
+                                                                        .ToListAsync(cancellationToken);
         return pokemonResponseDtos;
     }
 

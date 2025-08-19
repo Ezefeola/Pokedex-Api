@@ -25,8 +25,6 @@ public class UserInfo : IUserInfo
         {
             UserId = parsedGuid;
         }
-
-        //UserId = Guid.Parse(sub);
     }
 
     public Guid UserId { get; }

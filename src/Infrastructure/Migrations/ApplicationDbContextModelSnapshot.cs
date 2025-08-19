@@ -46,7 +46,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.HasKey("UserId", "PokemonId");
@@ -107,7 +106,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("Type2");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.Property<decimal>("Weight")
@@ -148,7 +146,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime");
 
                     b.ComplexProperty<Dictionary<string, object>>("EmailAddress", "Domain.Users.User.EmailAddress#EmailAddress", b1 =>

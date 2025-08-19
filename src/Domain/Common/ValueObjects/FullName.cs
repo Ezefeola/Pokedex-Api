@@ -64,9 +64,9 @@ public sealed record FullName : ValueObject
     private static DomainResult Validate(string firstName, string lastName)
     {
         List<string> errors = [];
-        if (string.IsNullOrWhiteSpace(firstName)) errors.Add(DomainErrors.UserErrors.FIRST_NAME_NOT_EMPTY);
+        if (string.IsNullOrWhiteSpace(firstName)) errors.Add(DomainErrors.Users.FIRST_NAME_NOT_EMPTY);
 
-        if (string.IsNullOrWhiteSpace(lastName)) errors.Add(DomainErrors.UserErrors.LAST_NAME_NOT_EMPTY);
+        if (string.IsNullOrWhiteSpace(lastName)) errors.Add(DomainErrors.Users.LAST_NAME_NOT_EMPTY);
 
         if (errors.Count > 0)
         {
